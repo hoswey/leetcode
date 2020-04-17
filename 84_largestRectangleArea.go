@@ -3,76 +3,103 @@ package main
 import "fmt"
 import "container/list"
 
-var EmptyStack = 99
 
 type Stack struct {
-    l *list.List
+	l *list.List	
 }
 
-func (s *Stack) Pop () int {
+func NewStack() *Stack {
 
-    if s.l.Len() == 0 {
-        return EmptyStack
-    }
-
-    ele := s.l.Front()
-    s.l.Remove(ele)
-
-    return ele.Value.(int)
+	return &Stack{l: list.New()}
 }
 
-func (s *Stack) Push(val int) {
-    s.l.PushFront(val)
+func (s *Stack) pop() int {
+	ele := s.l.Front()
+	s.l.Remove(ele)
+	return ele.Value.(int)
 }
 
-func (s *Stack) Peek () int {
-
-    if s.l.Len() == 0 {
-        return EmptyStack
-    }
-
-    return s.l.Front().Value.(int)
+func (s *Stack) peek() int {
+	ele := s.l.Front()
+	return ele.Value.(int)	
 }
 
+func (s *Stack) len() int {
+	return s.l.Len()
+}
 
-func (s *Stack) Len() int {
+func (s *Stack) push(v int) {
+	s.l.PushFront(v)
+}
 
-    return s.l.Len()
+func (s *Stack) String() string {
+
+	ele := s.l.Front()
+	if ele == nil {
+		return ""
+	}
+
+	var slice []int
+	for ele != nil {
+		slice = append(slice, ele.Value.(int))
+		ele = ele.Next()
+	}
+
+	return fmt.Sprintf("%v", slice)
 }
 
 
 func largestRectangleArea(heights []int) int {
-    
-    var ans int
 
-    l :=  Stack{l: list.New()}
-    l.Push(-1)
+	if len(heights) == 0 {
+		return 0
+	}
 
-    for i := 0; i < len(heights); i++ {
+	s := NewStack()
+	s.push(-1)
 
-        for l.Len() > 1 && heights[l.Peek()] > heights[i] {
-            ans = max(ans, heights[l.Pop()]  * (i - 1 - l.Peek()))
-        }
-        l.Push(i)
-    }
+	var ans int
+	for i, _ := range heights {
+		
+		for s.len() > 1 && heights[s.peek()] > heights[i] {
 
-    for l.Len() > 1 {
-        ans = max(ans, heights[l.Pop()] * (len(heights) - 1  - l.Peek()))
-    }
-    
-    return ans
-}
+			fmt.Printf("i:%d, stack:%v\n",i, s)
+			height := heights[s.pop()]
+			area := height * (i - s.peek() - 1) 
 
-func max(a, b int) int {
-    if a > b {
-        return a
-    } else {
-        return b
-    }
+			fmt.Printf("i:%d, height:%v, area:%v\n", i,height, area)
+			if area > ans {
+				ans = area
+			}
+		}
+		s.push(i)
+	}
+
+	for s.len() > 1 {
+		height := heights[s.pop()]
+		area := height * (len(heights) - s.peek() - 1) 
+		if area > ans {
+			ans = area
+		}
+	}
+
+	return ans
 }
 
 func main() {
 
-    input := []int{2,1,2}
-    fmt.Printf("input:%v, output:%v\n", input, largestRectangleArea(input))
+
+	var input []int
+	input = []int{2,1,5,6,2,3}
+
+	fmt.Printf("input:%v, ouput:%v, expected:%d", input, largestRectangleArea(input), 10)
+
+	input = []int{2}
+
+	fmt.Printf("input:%v, ouput:%v, expected:%d", input, largestRectangleArea(input), 2)
+
+	input = []int{2,1,1,1,2,3}
+
+	fmt.Printf("input:%v, ouput:%v, expected:%d", input, largestRectangleArea(input), 6)	
+
 }

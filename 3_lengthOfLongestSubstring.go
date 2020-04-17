@@ -1,3 +1,4 @@
+//双指针
 func lengthOfLongestSubstring(s string) int {
 
 	var i, j,max int
