@@ -1,44 +1,18 @@
+// 给定整数 n 和 k，找到 1 到 n 中字典序第 k 小的数字。
+
+// 注意：1 ≤ k ≤ n ≤ 10^9。
+
+// 示例 :
+
+// 输入:
+// n: 13   k: 2
+
+// 输出:
+// 10
+
+// 解释:
+// 字典序的排列是 [1, 10, 11, 12, 13, 2, 3, 4, 5, 6, 7, 8, 9]，所以第二小的数字是 10。
+
 func findKthNumber(n int, k int) int {
 
-	prefix := 1
-	p := 1
-
-	for p < k {
-
-		count := getCount(prefix, n)
-		if p + count > k {
-			p++
-			prefix *= 10
-		} else {
-			p += count
-			prefix++
-		}
-
-	}
-
-	return prefix
-    
-}
-
-func getCount(i, n int) int {
-
-	cur := i
-	next := i+1
-
-	var count int
-	for cur <= n {
-		count += min(next, n+1) - cur
-		cur *= 10
-		next *= 10
-	}
-
-	return count
-}
-
-func min(a, b int) int {
-	if a < b {
-		return a
-	} else {
-		return b
-	}
 }

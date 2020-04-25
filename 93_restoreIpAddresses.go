@@ -11,70 +11,65 @@ import (
 // 输入: "25525511135"
 // 输出: ["255.255.11.135", "255.255.111.35"]
 
+import "strconv"
+
 func restoreIpAddresses(s string) []string {
-    
-    var path []string
-    var ans [][]string
-	for i := 1; i <= 3; i++ {
-		if len(s) >= i {
-			backtracking(s[i:], s[0:i], 0, path, &ans)
-		}		
-	}    
 
-	var fmtAns []string
-	for i := range ans {
-		var ip string
-		for j := range ans[i] {
-			ip = ip + ans[i][j]
-			if j < len(ans[i]) - 1 {
-				ip += "."
-			}
-		}
-		fmtAns = append(fmtAns, ip)
-	}
-
-	return fmtAns
+    var ans []string
+    backtrack(0, s, nil, &ans)
+    return ans
 }
 
-func backtracking(remain string, part string, size int, path []string, ans *[][]string){
+func backtrack(pos int, s string, ip []string, ans *[]string) {
 
-	if !validIp(part) {
-		return
-	}
+    for i := 1; i <= 3; i++ {
+        if pos + i > len(s) {
+            return
+        }
 
-	if size == 3 {
-		if remain == "" {
-			path = append(path, part)
-			*ans = append(*ans, path)
-		}
-	} else {
-		for i := 1; i <= 3; i++ {
-			if len(remain) >= i {
-				newPath := append(path, part)
-                newSize := size + 1
-				backtracking(remain[i:], remain[0:i], newSize, newPath, ans)
-			}		
-		}		
-	}
+        part := s[pos: pos+i]
+        if isValidIp(part) {
+
+            ipCp := make([]string, len(ip))
+            copy(ipCp, ip)
+            ipCp = append(ipCp, part)
+
+            if len(ipCp) == 4 {
+                if pos+i == len(s) {
+                    *ans = append(*ans, convertToIpString(ipCp))
+                }
+            } else {
+                backtrack(pos + i, s, ipCp, ans)
+            }
+        }
+    }
 }
 
-func validIp(part string) bool{
+func convertToIpString(ips []string) string {
 
-	if len(part) > 1 && part[0] == '0' {
-		return false
-	}
+    var str string
+    for i := 0; i < len(ips); i++ {
+        str += ips[i]
+        if i != len(ips) - 1 {
+            str += "."
+        }
+    }
+    return str
+}
 
 
-	i, err := strconv.Atoi(part)
-	if err != nil {
-		return false
-	}
+func isValidIp(s string) bool {
 
-	if i >= 0 && i <= 255 {
-		return true
-	}
+    if len(s) > 1 && s[0] == '0' {
+        return false
+    }
 
-	return false
+    i, err := strconv.Atoi(s)
+    if err != nil {
+        return false
+    }
+
+    return i >= 0 && i <= 255
 }
 
 func main() {
