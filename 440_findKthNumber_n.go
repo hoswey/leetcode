@@ -21,41 +21,35 @@ import "fmt"
 
 func findKthNumber(n int, k int) int {
 
-	//前缀
+	p := 1
 	prefix := 1
 
-	//作为一个指针，指向当前所在位置，当p==k时，也就是到了排位第k的数	
-	p := 1
 	for p < k {
 
-		//获得当前前缀下所有子节点的和
 		count := getCount(prefix, n)
 
-		fmt.Printf("p:%d, prefix:%d, count:%d\n", p, prefix, count)
-		//第k个数在当前前缀下		
 		if p + count > k {
-			p++
+
+			p += 1
 			prefix *= 10
+
 		} else {
 			p += count
-			prefix++
+			prefix += 1
 		}
-
 	}
 
-	return prefix
-    
+    return prefix
 }
 
-func getCount(i, n int) int {
-
-	cur := i
-	next := i+1
+func getCount(prefix, n int) int{
 
 	var count int
-	for cur <= n {
-		count += min(next, n+1) - cur
-		cur *= 10
+	next := prefix + 1
+	for prefix < n {
+		count += min(n+1, next) - prefix
+
+		prefix *= 10
 		next *= 10
 	}
 
@@ -65,9 +59,8 @@ func getCount(i, n int) int {
 func min(a, b int) int {
 	if a < b {
 		return a
-	} else {
-		return b
 	}
+	return b
 }
 
 func main() {

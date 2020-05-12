@@ -30,7 +30,7 @@ func firstMissingPositive(nums []int) int {
 		}
 
 		trgIdx := nums[i] - 1
-	
+
 		for i != trgIdx && !(nums[i] <= 0 || nums[i] > len(nums)) {
 
 			if nums[trgIdx] == nums[i] {

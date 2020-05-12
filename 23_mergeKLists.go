@@ -1,3 +1,5 @@
+package main
+
 import "fmt"
 // 合并 k 个排序链表，返回合并后的排序链表。请分析和描述算法的复杂度。
 
@@ -20,83 +22,101 @@ import "fmt"
  */
 func mergeKLists(lists []*ListNode) *ListNode {
     
-	var tlists  []*ListNode
-	for i, _ := range lists {
-		if lists[i] != nil {
-			tlists = append(tlists, lists[i])
-		}
-	}
-	lists = tlists
+    lists = filterNilList(lists)
+    return merge(lists)
+
+}
+
+func merge(lists []*ListNode) *ListNode {
 
     if len(lists) == 0 {
         return nil
     }
     
-    if len(lists) < 2 {
+    if len(lists) == 1 {
         return lists[0]
     }
 
-    var ret *ListNode
-	for i := 0; i < len(lists); i++ {
-        
-        if lists[i] == nil {
-            continue
-        }
-		ret = doMergeTwoLists(ret, lists[i])
-		printLists(ret)
-	}
+    mid := len(lists)/2
 
-	return ret
+    a := merge(lists[0:mid])
+    b := merge(lists[mid: len(lists)])
+
+	return doMergeTwoLists(a, b)	
 }
 
-func doMergeTwoLists(first, second *ListNode) *ListNode {
+func doMergeTwoLists(a, b *ListNode) *ListNode{
 
-	if first == nil && second != nil {
-		return second
-	} else if second == nil && first != nil {
-		return first
-	} else if first == nil && second == nil {
-		panic("bug")
-	}
 
 	dummy := new(ListNode)
-    cur := dummy
+	cur := dummy
+	for a != nil && b != nil {
 
-	for first != nil && second != nil {
-        
-		var node *ListNode
-		if first.Val <= second.Val {
-			node = first
-		    first = first.Next            
+		if a.Val < b.Val {
+			cur.Next = a 
+			a = a.Next
+			cur = cur.Next
 		} else {
-			node = second
-	    	second = second.Next            
+			cur.Next = b 
+			b = b.Next
+			cur = cur.Next
 		}
+	}
 
-		cur.Next = node
+	if a != nil {
+		cur.Next = a
+	}
+
+	if b != nil {
+		cur.Next = b
+	}
+	return dummy.Next
+}
+
+func filterNilList(lists []*ListNode) []*ListNode {
+
+	var temp  []*ListNode
+	for i, _ := range lists {
+		if lists[i] != nil {
+			temp = append(temp, lists[i])
+		}
+	}
+	return temp	
+}
+
+func main() {
+
+	a := buildList([]int{1,4,5})
+	b := buildList([]int{1,3,4})
+	c := buildList([]int{2,6})
+
+	printListNode(mergeKLists([]*ListNode{a,b,c}))
+}
+
+func printListNode(list *ListNode) {
+
+	for list != nil {
+		fmt.Printf("%d\t",list.Val)
+		list = list.Next
+	}
+}
+
+func buildList(arr []int) *ListNode {
+
+	dummy := new(ListNode)
+	cur := dummy
+	for i, _ := range arr {
+		node := ListNode{Val: arr[i]}
+		cur.Next = &node
 		cur = cur.Next
-		cur.Next = nil
 	}
 
-    printLists(first)
-	if first != nil {
-		cur.Next = first
-	}
-
-	if second != nil {
-		cur.Next = second
-	}
-
-	ans := dummy.Next
-	dummy.Next = nil //free the memory
-
-	return ans
+	return dummy.Next
 }
 
-func printLists(list *ListNode)  {
 
-	// for list != nil {
-	// 	list = list.Next
-	// }
-	// fmt.Println()
-}
+
+type ListNode struct {
+  Val int
+  Next *ListNode
+ }
