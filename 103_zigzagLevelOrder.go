@@ -7,35 +7,29 @@
  * }
  */
 func zigzagLevelOrder(root *TreeNode) [][]int {
-    
-    if root == nil {
-        return nil
-    }
 
-    var ans [][]int
-    travel(&ans, root, 0)
-
-    return ans
+  var ans [][]int
+  travel(&ans, root, 0)
+  return ans
 }
 
-func travel(ans *[][]int, root *TreeNode, level int) {
+func travel(ans *[][]int, node *TreeNode, level int) {
 
-	if root == nil {
-		return
-	}
+  if node == nil {
+    return
+  }
 
-	if len(*ans) == level {
-		var levelArr []int
-		*ans = append(*ans, levelArr)
-	}
+  if len(*ans) == level {
+    var level []int
+    *ans = append(*ans, level)
+  }
 
+  if level % 2 == 0 {
+    (*ans)[level] = append((*ans)[level], node.Val)
+  } else {
+    (*ans)[level] = append([]int{node.Val}, (*ans)[level]...)
+  }
 
-	if level % 2 == 0 {
-		(*ans)[level] = append((*ans)[level], root.Val)
-	} else {
-        (*ans)[level] = append([]int{root.Val}, (*ans)[level]...)
-	}
-
-	travel(ans, root.Left, level + 1)
-	travel(ans, root.Right, level + 1)
+  travel(ans, node.Left, level+1)
+  travel(ans, node.Right, level+1)
 }
