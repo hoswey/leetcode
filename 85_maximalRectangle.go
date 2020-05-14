@@ -1,3 +1,5 @@
+package main
+
 func maximalRectangle(matrix [][]byte) int {
 
 	r := len(matrix)
@@ -9,8 +11,8 @@ func maximalRectangle(matrix [][]byte) int {
 	c := len(matrix[0])
 	for i := 0; i < r; i++ {
 		for j := 0; j < c; j++ {
-            
-            matrix[i][j] = matrix[i][j] - '0'
+
+			matrix[i][j] = matrix[i][j] - '0'
 
 			if j == 0 || matrix[i][j] == 0 {
 				continue
@@ -22,11 +24,10 @@ func maximalRectangle(matrix [][]byte) int {
 	var ans int
 	for i := 0; i < r; i++ {
 		for j := 0; j < c; j++ {
-
-            minWidth := 1 << 31 - 1
+			minWidth := 1<<31 - 1
 			for k := i; k >= 0; k-- {
-                minWidth = min(minWidth, int(matrix[k][j]))
-				ans = max(ans, minWidth * (i-k+1))
+				minWidth = min(minWidth, int(matrix[k][j]))
+				ans = max(ans, minWidth*(i-k+1))
 			}
 		}
 	}
@@ -45,7 +46,7 @@ func min(a, b int) int {
 func max(a, b int) int {
 	if a > b {
 		return a
-	} 
+	}
 
 	return b
 }
