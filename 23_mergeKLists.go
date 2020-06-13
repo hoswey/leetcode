@@ -21,7 +21,7 @@ import "fmt"
  * }
  */
 func mergeKLists(lists []*ListNode) *ListNode {
-    
+
     lists = filterNilList(lists)
     return merge(lists)
 
@@ -32,7 +32,7 @@ func merge(lists []*ListNode) *ListNode {
     if len(lists) == 0 {
         return nil
     }
-    
+
     if len(lists) == 1 {
         return lists[0]
     }
@@ -42,22 +42,21 @@ func merge(lists []*ListNode) *ListNode {
     a := merge(lists[0:mid])
     b := merge(lists[mid: len(lists)])
 
-	return doMergeTwoLists(a, b)	
+	return doMergeTwoLists(a, b)
 }
 
 func doMergeTwoLists(a, b *ListNode) *ListNode{
-
 
 	dummy := new(ListNode)
 	cur := dummy
 	for a != nil && b != nil {
 
 		if a.Val < b.Val {
-			cur.Next = a 
+			cur.Next = a
 			a = a.Next
 			cur = cur.Next
 		} else {
-			cur.Next = b 
+			cur.Next = b
 			b = b.Next
 			cur = cur.Next
 		}
@@ -81,7 +80,7 @@ func filterNilList(lists []*ListNode) []*ListNode {
 			temp = append(temp, lists[i])
 		}
 	}
-	return temp	
+	return temp
 }
 
 func main() {
