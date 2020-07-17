@@ -8,8 +8,8 @@
 //           1
 //          / \
 //         2   3
-//        / \     
-//       4   5    
+//        / \
+//       4   5
 // 返回 3, 它的长度是路径 [4,2,1,3] 或者 [5,2,1,3]。
 
 /**
@@ -20,36 +20,36 @@
  *     Right *TreeNode
  * }
  */
-func diameterOfBinaryTree(root *TreeNode) int {
 
-	if root == nil {
-		return 0
-	}
+ func diameterOfBinaryTree(root *TreeNode) int {
 
-	var ans int
-	recurse(root, &ans)
-	return ans
+  if root == nil {
+    return 0
+  }
+
+  var ans int
+  dfs(root, &ans)
+  return ans - 1
 }
 
-func recurse(root *TreeNode, ans *int) int {
+func dfs(root *TreeNode, ans *int) int {
 
-	var left, right int
+  if root == nil {
+    return 0
+  }
 
-	if root.Left != nil {
-		left = 1 + recurse(root.Left, ans)
-	}
+  left = dfs(root.Left)
+  right = dfs(root.Right)
 
-	if root.Right != nil {
-		right = 1 + recurse(root.Right, ans)
-	}
+  *ans = max(*ans, left + right + 1)
 
-	*ans = max(*ans, left + right)
-	return max(left, right)
+  return max(left, right)
 }
 
 func max(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
+  if a > b {
+    return a
+  }
+  return b
 }
+
