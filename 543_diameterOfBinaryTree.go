@@ -20,36 +20,31 @@
  *     Right *TreeNode
  * }
  */
+func diameterOfBinaryTree(root *TreeNode) int {
 
- func diameterOfBinaryTree(root *TreeNode) int {
+	var ans int
+	recurse(root, &ans)
+	return ans
 
-  if root == nil {
-    return 0
-  }
-
-  var ans int
-  dfs(root, &ans)
-  return ans - 1
 }
 
-func dfs(root *TreeNode, ans *int) int {
+func recurse(root *TreeNode, ans *int) int {
 
-  if root == nil {
-    return 0
-  }
+	if root == nil {
+		return 0
+	}
 
-  left = dfs(root.Left)
-  right = dfs(root.Right)
+	left := recurse(root.Left, ans)
+	right := recurse(root.Right, ans)
 
-  *ans = max(*ans, left + right + 1)
+	*ans = max(*ans, left+right)
 
-  return max(left, right)
+	return max(left, right) + 1
 }
 
 func max(a, b int) int {
-  if a > b {
-    return a
-  }
-  return b
+	if a > b {
+		return a
+	}
+	return b
 }
-
