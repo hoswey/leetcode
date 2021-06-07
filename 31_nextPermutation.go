@@ -10,7 +10,7 @@ func nextPermutation(nums []int)  {
 		if nums[i] > nums[i-1] {
 			//2、从后往前， 找出第一个 a[k] > a[i-1]的， swap
 
-			j := len(nums) - 1;			
+			j := len(nums) - 1;
 			for {
 				if nums[j] <= nums[i-1] {
 					j--
@@ -18,7 +18,7 @@ func nextPermutation(nums []int)  {
 					nums[i-1], nums[j] = nums[j], nums[i-1]
 					// 反转a[i:end]
 					reverse(nums[i:])
-					return					
+					return
 				}
 
 			}
@@ -27,10 +27,6 @@ func nextPermutation(nums []int)  {
 	}
 
 	//3、假如未找到一组合法对，表示该排列是最大， 则反转a[i:end]
-	reverse(nums)
-
-}
-
 func reverse(arr []int) {
 
 	lo := 0

@@ -6,44 +6,45 @@
 
 // @lc code=start
 import "sort"
+import "fmt"
 
 func combinationSum2(candidates []int, target int) [][]int {
 
 	sort.Ints(candidates)
-	//递归，一个数字只有选和不选的可能性
-	ans := make(map[string][]int)
-	recurse(candidates, 0, target, nil, ans)
 
-	var ret [][]int
-	for _, v := range ans {
-		ret = append(ret, v)
-	}
-	return ret
-}
+	var ans [][]int
+	var sequence []int
+	var dfs func(int, int)
 
-func recurse(candidates []int, from int, target int, cur []int, ans map[string][]int) {
+	dfs = func(from int, left int) {
 
-	if target == 0 {
-		var key string
-		for _, v := range cur {
-			key = key + "_" + string(v)
+		if left == 0 {
+			ans = append(ans, append([]int(nil), sequence...))
+			return
 		}
-		ans[key] = cur
-		return
+
+		if from > len(candidates) {
+			return 
+		}
+
+		for i := from; i < len(candidates); i++ {
+
+			if left < candidates[i] {
+				break
+			}
+
+			if i > from && candidates[i] == candidates[i - 1] {
+				continue
+			}
+
+			sequence = append(sequence, candidates[i])
+			dfs(i + 1, left - candidates[i])
+			sequence = sequence[:len(sequence) - 1]
+		}
 	}
 
-	if from >= len(candidates) {
-		return
-	}
-
-	if target >= candidates[from] {
-		newset := make([]int, len(cur))
-		copy(newset, cur)
-		newset = append(newset, candidates[from])
-
-		recurse(candidates, from + 1, target - candidates[from], newset, ans)
-	}
-	recurse(candidates, from + 1, target, cur, ans)
+	dfs(0, target)
+	return ans
 }
 // @lc code=end
 

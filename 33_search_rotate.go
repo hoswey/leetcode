@@ -8,7 +8,7 @@ func search(nums []int, target int) int {
     //对于每个二分的值 nums[mid]，
     //假如 nums[lo] < nums[mid], 不含旋转
     //   且nums[lo] <= target < nums[mid], 向前
-    //假如 nums[mid] < nums[lo] , 发生旋转
+    //假如 nums[lo] > nums[mid] , 发生旋转
     //   假如target >= nums[lo], 向前
     //   假如target <  nums[mid], 向前
 
