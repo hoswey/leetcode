@@ -7,21 +7,21 @@
 // @lc code=start
 func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
 
-	s := len(nums1) + len(nums2)
+	l := len(nums1) + len(nums2)
+	n1 := findKth(nums1, nums2, (l + 1)/2)
+	n2 := findKth(nums1, nums2, (l + 2)/2)
 
-	n1 := findTheKth(nums1, nums2, (s+1)/2)
-	n2 := findTheKth(nums1, nums2, (s+2)/2)
-	return (float64(n1) + float64(n2))/2
+	return float64(n1+n2)/2
 }
 
-func findTheKth(nums1 []int, nums2 []int, k int) int {
+func findKth(nums1, nums2 []int, k int) int {
 
 	if len(nums1) > len(nums2) {
-		return findTheKth(nums2, nums1, k)
+		return findKth(nums2, nums1, k)
 	}
 
 	if len(nums1) == 0 {
-		return nums2[k-1]
+		return nums2[k - 1]
 	}
 
 	if k == 1 {
@@ -32,14 +32,15 @@ func findTheKth(nums1 []int, nums2 []int, k int) int {
 		}
 	}
 
-	m := k/2
-	if len(nums1) < m {
-		m = len(nums1)
+	h := k / 2
+	if h > len(nums1) {
+		h = len(nums1)
 	}
-	if nums1[m-1] < nums2[m-1] {
-		return findTheKth(nums1[m:], nums2, k - m)
+
+	if nums1[h-1] < nums2[h-1] {
+		return findKth(nums1[h:], nums2, k - h)
 	} else {
-		return findTheKth(nums1, nums2[m:], k - m)
+		return findKth(nums1, nums2[h:], k - h)
 	}
 }
 // @lc code=end
