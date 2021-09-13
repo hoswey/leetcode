@@ -7,26 +7,32 @@
 // @lc code=start
 func findKthLargest(nums []int, k int) int {
 
+	//[7,6,5,4,3,2,1]
+	//2
+	if k > len(nums) {
+		return -1
+	}
+
 	j := len(nums) - k
 	start := 0
 	end := len(nums) - 1
 	for {
+
 		p := partition(nums, start, end)
 		if p == j {
 			return nums[p]
-		}
-		if p < j {
+		} else if p < j {
 			start = p + 1
 		} else {
 			end = p - 1
 		}
-	}  
+	}
 }
 
 func partition(nums []int, start, end int) int {
 
-	//get medium of three
-	mid := start + (end - start)/2
+	//medium of three
+	mid := start + (end-start)/2
 	if nums[start] > nums[mid] {
 		nums[start], nums[mid] = nums[mid], nums[start]
 	}
@@ -35,18 +41,19 @@ func partition(nums []int, start, end int) int {
 		nums[start], nums[end] = nums[end], nums[start]
 	}
 
-	if nums[mid] < nums[end] {
-		nums[mid], nums[end] = nums[end], nums[mid]
+	if nums[end] > nums[mid] {
+		nums[end], nums[mid] = nums[mid], nums[end]
 	}
 
 	j := start
 	for i := start; i < end; i++ {
-		if nums[i] < nums[end] {
-			nums[i], nums[j] = nums[j], nums[i]
+		if nums[i] <= nums[end] {
+			nums[j], nums[i] = nums[i], nums[j]
 			j++
 		}
 	}
-	nums[j], nums[end] = nums[end],nums[j]
+	nums[j], nums[end] = nums[end], nums[j]
 	return j
 }
+
 // @lc code=end

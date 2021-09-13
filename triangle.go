@@ -4,9 +4,9 @@ func minimumTotal(triangle [][]int) int {
 		return 0
 	}
 
-	dp := make([]int,len(triangle))
+	dp := make([]int, len(triangle))
 
-    var ans int
+	var ans int
 	for i, row := range triangle {
 
 		m := 1 << 31
@@ -24,7 +24,7 @@ func minimumTotal(triangle [][]int) int {
 		}
 		fmt.Printf("i:%v, dp:%v\n", i, dp)
 		ans = m
-	}    
+	}
 	return ans
 }
 
