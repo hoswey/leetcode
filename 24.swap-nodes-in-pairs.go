@@ -15,15 +15,13 @@
 func swapPairs(head *ListNode) *ListNode {
 
 	dummy := new(ListNode)
-	pre := dummy
-	pre.Next = head
+	dummy.Next = head
 
-	var fir, sec *ListNode
-	for {
+	var pre, fir, sec, next *ListNode
 
-		if pre == nil {
-			break
-		}
+	pre = dummy
+
+	for pre != nil {
 
 		fir = pre.Next
 		if fir == nil {
@@ -35,14 +33,17 @@ func swapPairs(head *ListNode) *ListNode {
 			break
 		}
 
-		temp := sec.Next
+		next = sec.Next
+
 		pre.Next = sec
 		sec.Next = fir
-		fir.Next = temp
-		
+		fir.Next = next
+
 		pre = fir
 	}
+
 	return dummy.Next
 }
+
 // @lc code=end
 
