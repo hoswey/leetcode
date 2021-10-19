@@ -34,19 +34,19 @@ func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
 		return root
 	}
 
-	left := lowestCommonAncestor(root.Left, p, q)
-	right := lowestCommonAncestor(root.Right, p, q)
-
-	if left == nil {
-		return right
-	}
-
-	if right == nil {
-		return left
-	}
+	*TreeNode left  := lowestCommonAncestor(root, p, q)
+	*TreeNode right := lowestCommonAncestor(root, p, q)
 
 	if left != nil && right != nil {
 		return root
+	}
+
+	if left != nil {
+		return left
+	}
+
+	if right != nil {
+		return right
 	}
 	return nil
 }
