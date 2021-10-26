@@ -11,22 +11,21 @@ func numDecodings(s string) int {
 		return 0
 	}
 
-	//dp[-1], dp[0] = 1
-	pre, cur := 1, 1 
+	pre, cur := 1, 1
 	for i := 1; i < len(s); i++ {
-		tmp := cur
+
+		temp := cur
 		if s[i] == '0' {
-			if s[i-1] == '1' || s[i-1] == '2' {
-				cur = pre
-			} else {
+			if s[i-1] != '1' && s[i-1] != '2' {
 				return 0
 			}
-		} else if s[i-1] == '1' || s[i-1] == '2' && s[i] >= '1' && s[i] <= '6' {
-			cur = pre + cur
+			cur = pre
+		} else if s[i-1] == '1' || s[i-1] == '2' && (s[i] >= '1' && s[i] <= '6') {
+			cur = cur + pre
 		} else {
 			cur = cur
 		}
-		pre = tmp
+		pre = temp
 	}
 	return cur
 }
