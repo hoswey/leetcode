@@ -10,7 +10,7 @@ func search(nums []int, target int) int {
 	lo := 0
 	hi := len(nums) - 1
 
-	for lo < hi {
+	for lo <= hi {
 
 		mid := lo + (hi-lo)/2
 
@@ -26,9 +26,6 @@ func search(nums []int, target int) int {
 		}
 	}
 
-	if nums[lo] == target {
-		return lo
-	}
 	return -1
 }
 

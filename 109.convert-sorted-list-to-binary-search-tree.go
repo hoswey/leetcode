@@ -26,42 +26,41 @@ func sortedListToBST(head *ListNode) *TreeNode {
 		return nil
 	}
 
-	l, m, r := split(head)
+	left, mid, right := split(head)
 
 	node := new(TreeNode)
-	node.Val = m.Val
-	node.Left = sortedListToBST(l)
-	node.Right = sortedListToBST(r)
+	node.Val = mid.Val
+	node.Left = sortedListToBST(left)
+	node.Right = sortedListToBST(right)
 
 	return node
 }
 
 func split(head *ListNode) (*ListNode, *ListNode, *ListNode) {
 
-	if head.Next == nil {
+	if head == nil || head.Next == nil {
 		return nil, head, nil
 	}
 
-	pre, slow, fast := head, head, head
-
+	pre, fast, slow := head, head, head
 	for fast != nil && fast.Next != nil {
 
-		pre = slow
-
-		slow = slow.Next
 		fast = fast.Next
-
-		if fast == nil {
-			break
+		if fast != nil {
+			fast = fast.Next
 		}
-		fast = fast.Next
+
+		pre = slow
+		slow = slow.Next
 	}
 
-	right := slow.Next
 	mid := pre.Next
-	mid.Next = nil
 	pre.Next = nil
+
+	right := mid.Next
+	mid.Next = nil
 
 	return head, mid, right
 }
+
 // @lc code=end

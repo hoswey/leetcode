@@ -17,22 +17,6 @@ func longestCommonSubsequence(text1 string, text2 string) int {
 		dp[i] = make([]int, N + 1)
 	}
 
-	for j := 1; j <= N; j++ {
-		if text1[0] == text2[j-1] {
-			dp[1][j] = 1
-		} else {
-			dp[1][j] = dp[1][j-1]
-		}
-	}
-
-	for i := 1; i <= M; i++ {
-		if text1[i-1] == text2[0] {
-			dp[i][1] = 1
-		} else {
-			dp[i][1] = dp[i-1][1]
-		}
-	}
-
 	for i := 1; i <= M; i++ {
 		for j := 1; j <= N; j++ {
 			if text1[i-1] == text2[j-1] {

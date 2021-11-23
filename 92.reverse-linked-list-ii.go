@@ -57,6 +57,5 @@ func reverse(head *ListNode) *ListNode {
 
 	return pre
 }
-
 // @lc code=end
 

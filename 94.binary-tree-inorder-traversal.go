@@ -34,12 +34,9 @@ func inorderTraversal(root *TreeNode) []int {
 		node := e.Value.(*TreeNode)
 		ans = append(ans, node.Val)
 
-		if node.Right != nil {
-			cur = node.Right
-		}
+		cur = node.Right
 	}
 	return ans
 }
-
 // @lc code=end
 

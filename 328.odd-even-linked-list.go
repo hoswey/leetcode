@@ -13,34 +13,35 @@
  * }
  */
 func oddEvenList(head *ListNode) *ListNode {
-    
+
 	if head == nil || head.Next == nil {
 		return head
 	}
 
 	oh := head
-	oc := oh
-
 	eh := head.Next
-	ec := eh
-
 	cur := eh.Next
+
+	co := oh
+	ce := eh
 
 	for cur != nil {
 
-		oc.Next = cur
-		oc = cur
+		co.Next = cur
+		co = co.Next
 
 		cur = cur.Next
-		ec.Next = cur
-		ec = cur
+
+		ce.Next = cur
+		ce = ce.Next
 
 		if cur == nil {
 			break
 		}
 		cur = cur.Next
 	}
-	oc.Next = eh
+
+	co.Next = eh
 	return oh
 }
 // @lc code=end
