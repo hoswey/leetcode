@@ -13,52 +13,26 @@
  *     Right *TreeNode
  * }
  */
-import "container/list"
-
 func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
-	
-	l := list.New()
-	l.PushBack(root)
 
-	for l.Len() > 0 {
+	if p.Val > q.Val {
+		return lowestCommonAncestor(root, q, p)
+	}
 
-		for i := l.Len(); i > 0; i-- {
-			
-			e := l.Front()
-			l.Remove(e)
+	for root != nil {
 
-			node := e.Value.(*TreeNode)
+		if root.Val >= p.Val && root.Val <= q.Val {
+			return root
+		}
 
-			if hasAncestor(node, p, q) && !hasAncestor(node.Left, p, q) && !hasAncestor(node.Right, p, q) {
-				return node
-			}
-
-			if node.Left != nil {
-				l.PushBack(node.Left)
-			}
-			if node.Right != nil {
-				l.PushBack(node.Right)
-			}
+		if root.Val > q.Val {
+			root = root.Left
+		} else {
+			root = root.Right
 		}
 	}
+	
 	return nil
-}
-
-func hasAncestor(root, p, q *TreeNode) bool {
-	return hasOneAncesstor(root, p) && hasOneAncesstor(root, q)
-}
-
-func hasOneAncesstor(root, p *TreeNode) bool {
-
-	if root == nil {
-		return false
-	}
-
-	if root == p {
-		return true
-	}
-
-	return hasOneAncesstor(root.Left, p) || hasOneAncesstor(root.Right, p)
 }
 // @lc code=end
 

@@ -21,27 +21,26 @@ type BSTIterator struct {
 }
 
 func Constructor(root *TreeNode) BSTIterator {
-
-	return BSTIterator{cur: root, l: list.New()}
+	return BSTIterator{l: list.New(), cur: root}
 }
 
 func (this *BSTIterator) Next() int {
 
 	for this.cur != nil {
-		this.l.PushBack(this.cur)
+		this.l.PushFront(this.cur)
 		this.cur = this.cur.Left
 	}
 
-	e := this.l.Back()
-	this.l.Remove(e)
+	node := this.l.Front()
+	this.l.Remove(node)
 
-	val := e.Value.(*TreeNode).Val
-	this.cur = e.Value.(*TreeNode).Right
-	return val
+	this.cur = node.Value.(*TreeNode).Right
+
+	return node.Value.(*TreeNode).Val
 }
 
 func (this *BSTIterator) HasNext() bool {
-	return this.cur != nil || this.l.Len() != 0
+	return this.l.Len() > 0 || this.cur != nil
 }
 
 /**

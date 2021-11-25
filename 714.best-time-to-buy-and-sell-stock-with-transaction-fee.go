@@ -1,11 +1,11 @@
 /*
- * @lc app=leetcode id=309 lang=golang
+ * @lc app=leetcode id=714 lang=golang
  *
- * [309] Best Time to Buy and Sell Stock with Cooldown
+ * [714] Best Time to Buy and Sell Stock with Transaction Fee
  */
 
 // @lc code=start
-func maxProfit(prices []int) int {
+func maxProfit(prices []int, fee int) int {
 
 	if len(prices) == 0 {
 		return 0
@@ -27,13 +27,8 @@ func maxProfit(prices []int) int {
 
 	for i := 1; i < n; i++ {
 
-		dp[i][0] = max(dp[i-1][0], dp[i-1][1]+prices[i])
-
-		if i >= 2 {
-			dp[i][1] = max(dp[i-1][1], dp[i-2][0]-prices[i])
-		} else {
-			dp[i][1] = max(dp[i-1][1], -prices[i])
-		}
+		dp[i][0] = max(dp[i-1][0], dp[i-1][1]+prices[i]-fee)
+		dp[i][1] = max(dp[i-1][1], dp[i-1][0]-prices[i])
 	}
 	return dp[n-1][0]
 }
@@ -46,4 +41,3 @@ func max(a int, b int) int {
 }
 
 // @lc code=end
-
